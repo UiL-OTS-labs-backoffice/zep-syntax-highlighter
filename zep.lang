@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+ZEP Syntax Highlighting for GtkSourceView (for use with e.g. gedit)
+
+Revisions: 
+2013-05-17	MK	Initial set-up, starting from java.lang
+2013-05-31	MK	Additions based on self-paced reading experiment
+2013-09-13	MK	Minor additions
+2013-10-25	MK	Additions for eye-tracking
+
+-->
+<language id="zep" _name="ZEP" version="2.0" _section="Scripts">
+  <metadata>
+    <property name="mimetypes">text/x-zep</property>
+    <property name="globs">*.zp;*.zm</property>
+    <property name="line-comment-start">//</property>
+    <property name="block-comment-start">/*</property>
+    <property name="block-comment-end">*/</property>
+  </metadata>
+
+  <styles>
+    <style id="escaped-character" _name="Escaped Character"         map-to="def:special-char"/>
+    <style id="string"            _name="String"                    map-to="def:string"/>
+    <style id="char"              _name="Character"                 map-to="def:character"/>
+    <!-- Translators: refered to some specific keywords of the language that
+         allow to get external functionalities -->
+    <style id="external"          _name="External"                  map-to="def:preprocessor"/>
+    <style id="declaration"       _name="Declaration"               map-to="def:type"/>
+    <style id="storage-class"     _name="Storage Class"             map-to="def:type"/>
+    <style id="scope-declaration" _name="Scope Declaration"         map-to="def:type"/>
+    <style id="keyword"           _name="Keyword"                   map-to="def:keyword"/>
+    <style id="common-function"   _name="Common Function"           map-to="def:keyword"/>
+    <style id="null-value"        _name="Null Value"                map-to="def:special-constant"/>
+    <style id="boolean"           _name="Boolean value"             map-to="def:boolean"/>
+    <style id="number"            _name="Number"                    map-to="def:decimal"/>
+    <style id="reserved"          _name="Future Reserved Keywords"  map-to="def:reserved"/>
+    <style id="type"              _name="Data Type"                 map-to="def:type"/>
+    <style id="constant"          _name="Constant"                  map-to="def:constant"/>
+  </styles>
+
+  <definitions>
+
+    <define-regex id="escaped-character" extended="true">
+      \\(               # leading backslash
+      [\\\"\'nrbtf] |   # escaped character
+      [0-9]{1,3}    |   # latin encoded char
+      u[0-9]{1,4}       # unicode char
+      )
+    </define-regex>
+
+    <context id="string" style-ref="string" end-at-line-end="true" class="string" class-disabled="no-spell-check">
+      <start>"</start>
+      <end>"</end>
+      <include>
+        <context id="escaped-character" style-ref="escaped-character">
+          <match>\%{escaped-character}</match>
+        </context>
+      </include>
+    </context>
+
+   <context id="char" style-ref="char">
+     <match>'(\%{escaped-character}|.)'</match>
+   </context>
+
+    <context id="externals" style-ref="external">
+	<!-- ZEP-specific -->
+      <keyword>import</keyword>
+      <keyword>requires</keyword>
+      <keyword>plugin</keyword>
+      <keyword>program</keyword>
+    </context>
+
+    <context id="declarations" style-ref="declaration">
+	<!-- ZEP-specific -->
+	<!-- Experiment -->
+      <keyword>Experiment</keyword>
+      <keyword>Part</keyword>
+      <keyword>Block</keyword>
+      <keyword>Trial</keyword>
+      <keyword>SubTrial</keyword>
+      <keyword>Page</keyword>
+      <keyword>TestOutput</keyword>
+      <keyword>TransientPart</keyword>
+	<!-- Layouts -->
+      <keyword>VerticalLayout</keyword>
+      <keyword>HorizontalLayout</keyword>
+	<!-- Gadgets -->
+      <keyword>CanvasGadget</keyword>
+      <keyword>ButtonGadget</keyword>
+      <keyword>LabelGadget</keyword>
+      <keyword>TextAreaGadget</keyword>
+      <keyword>TextFieldGadget</keyword>
+	<!-- Shapes -->
+      <keyword>CrossShape</keyword>
+      <keyword>TextShape</keyword>
+      <keyword>ImageShape</keyword>
+      <keyword>CircleShape</keyword>
+      <keyword>RectangleShape</keyword>
+	<!-- Sounds -->
+      <keyword>SoundChain</keyword>
+      <keyword>SoundFile</keyword>
+      <keyword>SoundPlayback</keyword>
+      <keyword>BeepGenerator</keyword>
+      <keyword>Response</keyword>
+	<!-- Hits -->
+      <keyword>HitType</keyword>
+	<!-- Objects -->
+      <keyword>TestItem</keyword>
+      <keyword>Object</keyword>
+	<!-- Eye-tracking -->
+      <keyword>TobiiEyeTracker</keyword>
+	<!-- Hits -->
+      <keyword>Timer</keyword>
+    </context>
+
+    <context id="primitive-types" style-ref="type">
+	<!-- ZEP-specific -->
+      <keyword>void</keyword>
+      <keyword>bool</keyword>
+      <keyword>int</keyword>
+      <keyword>real</keyword>
+      <keyword>char</keyword>
+      <keyword>string</keyword>
+      <keyword>time</keyword>
+      <keyword>dur</keyword>
+      <keyword>color</keyword>
+      <keyword>enum</keyword>
+      <keyword>record</keyword>
+    </context>
+
+    <context id="storage-class" style-ref="storage-class">
+      <keyword>abstract</keyword>
+      <keyword>final</keyword>
+      <keyword>static</keyword>
+      <keyword>strictfp</keyword>
+      <keyword>synchronized</keyword>
+      <keyword>transient</keyword>
+      <keyword>volatile</keyword>
+    </context>
+
+    <context id="scope-declarations" style-ref="scope-declaration">
+      <keyword>private</keyword>
+      <keyword>protected</keyword>
+      <keyword>public</keyword>
+	<!-- ZEP-specific -->
+      <keyword>const</keyword>
+    </context>
+
+    <context id="flow" style-ref="keyword">
+      <keyword>assert</keyword>
+      <keyword>break</keyword>
+      <keyword>case</keyword>
+      <keyword>catch</keyword>
+      <keyword>continue</keyword>
+      <keyword>default</keyword>
+      <keyword>do</keyword>
+      <keyword>else</keyword>
+      <keyword>finally</keyword>
+      <keyword>for</keyword>
+      <keyword>if</keyword>
+      <keyword>return</keyword>
+      <keyword>throw</keyword>
+      <keyword>switch</keyword>
+      <keyword>try</keyword>
+      <keyword>while</keyword>
+	<!-- ZEP-specific -->
+      <keyword>terminate</keyword>
+      <keyword>full_abort</keyword>
+      <keyword>abort</keyword>
+      <keyword>start</keyword>
+      <keyword>stop</keyword>
+    </context>
+
+    <context id="common-function" style-ref="keyword">
+	<!-- ZEP-specific -->
+      <keyword>init</keyword>
+      <keyword>post_init</keyword>
+      <keyword>on_event:entry</keyword>
+      <keyword>on_event:enter</keyword>
+      <keyword>on_event:exit</keyword>
+      <keyword>on_event:key_press</keyword>
+      <keyword>on_event:activate</keyword>
+      <keyword>on_event:finish</keyword>
+      <keyword>on_event:message</keyword>
+      <keyword>on_event:start</keyword>
+      <keyword>on_event:pre_update</keyword>
+      <keyword>on_event:pre_start</keyword>
+      <keyword>on_event:pre_finish</keyword>
+      <keyword>on_event:expire</keyword>
+	<!-- CanvasGadget -->
+      <keyword>on_event:resize</keyword>
+	<!-- Eye-tracking -->
+      <keyword>on_event:connected</keyword>
+      <keyword>on_event:camera_setup_begin</keyword>
+      <keyword>on_event:camera_setup_cont</keyword>
+      <keyword>on_event:attention_begin</keyword>
+      <keyword>on_event:attention_cont</keyword>
+      <keyword>on_event:focus_begin</keyword>
+      <keyword>on_event:final_begin</keyword>
+      <keyword>on_event:final_cont</keyword>
+      <keyword>on_event:wakeup_begin</keyword>
+      <keyword>on_event:target_end</keyword>
+      <keyword>on_event:tracking_done</keyword>
+      <keyword>on_event:tracking_fail</keyword>
+      <keyword>on_event:tracking_abort</keyword>
+      <keyword>on_event:gaze_sample</keyword>
+      <keyword>on_event:fixation_start</keyword>
+      <keyword>on_event:fixation_end</keyword>
+      <keyword>on_event:fixation_update</keyword>
+      <keyword>on_event:blink_start</keyword>
+      <keyword>on_event:blink_end</keyword>
+      <keyword>on_event:proceed</keyword>
+    </context>
+
+    <context id="memory" style-ref="keyword">
+      <keyword>new</keyword>
+      <keyword>super</keyword>
+      <keyword>this</keyword>
+    </context>
+
+    <context id="future-reserved-words" style-ref="reserved">
+      <keyword>goto</keyword>
+    </context>
+
+    <context id="null-value" style-ref="null-value">
+      <keyword>null</keyword>
+    </context>
+
+    <context id="boolean" style-ref="boolean">
+      <keyword>false</keyword>
+      <keyword>true</keyword>
+	<!-- ZEP-specific -->
+      <keyword>OK</keyword>
+      <keyword>ERROR</keyword>
+    </context>
+
+	<!-- ZEP-specific: below allows also for '(m)s' after a (positive integer) number --> 
+    <context id="numeric" style-ref="number">
+      <match extended="true">
+	(\b([0-9]+|0[xX][0-9a-fA-F]+)[Ll]?\b|
+         \b(([0-9]+[Ee][-]?[0-9]+|
+            ([0-9]*\.[0-9]+|[0-9]+\.)([Ee][-]?[0-9]+)?)[fFdD]?|
+            [0-9]+[FfDd])|[0-9]+(m)?s)
+      </match>
+    </context>
+
+    <context id="constant" style-ref="constant">
+	<!-- ZEP-specific, see DisplayPlugin.cpp -->
+	<!-- Font sizes -->
+      <keyword>FONT_SIZE_MEDIUM</keyword>
+      <keyword>FONT_SIZE_LARGE</keyword>
+      <keyword>FONT_SIZE_XLARGE</keyword>
+      <keyword>FONT_SIZE_XXLARGE</keyword>
+      <keyword>FONT_SIZE_XXXLARGE</keyword>
+      <keyword>FONT_SIZE_SMALL</keyword>
+      <keyword>FONT_SIZE_XSMALL</keyword>
+      <keyword>FONT_SIZE_XSSMALL</keyword>
+	<!-- Test page -->
+      <keyword>TEST_PAGE_COLOR</keyword>
+	<!-- Test page stimulus -->
+      <keyword>TEST_PAGE_STIMULUS_COLOR</keyword>
+      <keyword>TEST_PAGE_STIMULUS_FONT_FAMILY</keyword>
+      <keyword>TEST_PAGE_STIMULUS_FONT_SIZE</keyword>
+      <keyword>TEST_PAGE_STIMULUS_TEXT_COLOR</keyword>
+	<!-- Test page button -->
+      <keyword>TEST_PAGE_BUTTON_FONT_FAMILY</keyword>
+      <keyword>TEST_PAGE_BUTTON_FONT_SIZE</keyword>
+      <keyword>TEST_PAGE_BUTTON_COLOR</keyword>
+      <keyword>TEST_PAGE_BUTTON_TEXT_COLOR</keyword>
+	<!-- Test page input -->
+      <keyword>TEST_PAGE_INPUT_FONT_FAMILY</keyword>
+      <keyword>TEST_PAGE_INPUT_FONT_SIZE</keyword>
+      <keyword>TEST_PAGE_INPUT_COLOR</keyword>
+      <keyword>TEST_PAGE_INPUT_TEXT_COLOR</keyword>
+	<!-- Test page message -->
+      <keyword>TEST_PAGE_MESSAGE_FONT_FAMILY</keyword>
+      <keyword>TEST_PAGE_MESSAGE_FONT_SIZE</keyword>
+      <keyword>TEST_PAGE_MESSAGE_COLOR</keyword>
+      <keyword>TEST_PAGE_MESSAGE_TEXT_COLOR</keyword>
+	<!-- Test page prompt -->
+      <keyword>TEST_PAGE_PROMPT_FONT_FAMILY</keyword>
+      <keyword>TEST_PAGE_PROMPT_FONT_SIZE</keyword>
+      <keyword>TEST_PAGE_PROMPT_COLOR</keyword>
+      <keyword>TEST_PAGE_PROMPT_TEXT_COLOR</keyword>
+	<!-- Alignment -->
+      <keyword>ALIGN_CENTER</keyword>
+      <keyword>ALIGN_BEGIN</keyword>
+      <keyword>ALIGN_END</keyword>
+      <keyword>LAYOUT_EQUAL_WIDTH</keyword>
+      <keyword>LAYOUT_EQUAL_HEIGHT</keyword>
+	<!-- Borders -->
+      <keyword>BORDER_RIDGE</keyword>
+	<!-- Texts -->
+      <keyword>CONTINUE_BUTTON_TEXT</keyword>
+      <keyword>NEXT_BUTTON_TEXT</keyword>
+      <keyword>REPEAT_BUTTON_TEXT</keyword>
+      <keyword>YES_BUTTON_TEXT</keyword>
+      <keyword>NO_BUTTON_TEXT</keyword>
+      <keyword>TRUE_BUTTON_TEXT</keyword>
+      <keyword>FALSE_BUTTON_TEXT</keyword>
+      <keyword>CORRECT_BUTTON_TEXT</keyword>
+      <keyword>INCORRECT_BUTTON_TEXT</keyword>
+      <keyword>FIRST_BUTTON_TEXT</keyword>
+      <keyword>SECOND_BUTTON_TEXT</keyword>
+      <keyword>WELCOME_TEXT</keyword>
+      <keyword>THANK_YOU_TEXT</keyword>
+	<!-- Intervals -->
+      <keyword>FIXATION_DURATION</keyword>
+      <keyword>FEEDBACK_DURATION</keyword>
+      <keyword>STIMULUS_DURATION</keyword>
+      <keyword>RESPONSE_DURATION</keyword>
+      <keyword>INTERSTIMULUS_INTERVAL</keyword>
+      <keyword>INTERSTIM_INTERVAL</keyword>
+      <keyword>INTERTRIAL_INTERVAL</keyword>
+      <keyword>CONTINUE</keyword>
+      <keyword>CANCEL</keyword>
+	<!-- Hit types -->
+      <keyword>HIT_VALID</keyword>
+      <keyword>HIT_TOO_EARLY</keyword>
+      <keyword>HIT_TOO_LATE</keyword>
+	<!-- Keyboard keys -->
+      <keyword>KEY_Shift_L</keyword>
+      <keyword>KEY_Shift_R</keyword>
+      <keyword>KEY_Return</keyword>
+      <keyword>KEY_Left</keyword>
+      <keyword>KEY_Right</keyword>
+      <keyword>KEY_Up</keyword>
+      <keyword>KEY_Down</keyword>
+	<!-- Experiment defaults -->
+      <keyword>EXPERIMENT_VERSION</keyword>
+      <keyword>DATABASE_NUMBER</keyword>
+      <keyword>DEFAULT_RESEARCHER_ID</keyword>
+      <keyword>EXPERIMENT_RECORD_UPDATEABLE</keyword>
+      <keyword>RESEARCHER_RECORD_UPDATEABLE</keyword>
+      <keyword>GROUP_RECORD_UPDATEABLE</keyword>
+      <keyword>SHOW_ASSIGNED_GROUP</keyword>
+      <keyword>NUM_RESULT_TABLES</keyword>
+    </context>
+
+    <context id="zep" class="no-spell-check">
+      <include>
+        <context ref="string"/>
+        <context ref="char"/>
+        <context ref="def:c-like-comment"/>
+        <context ref="def:c-like-comment-multiline"/>
+        <context ref="def:c-like-close-comment-outside-comment"/>
+        <context ref="externals"/>
+        <context ref="declarations"/>
+        <context ref="primitive-types"/>
+        <context ref="storage-class"/>
+        <context ref="scope-declarations"/>
+        <context ref="flow"/>
+        <context ref="common-function"/>
+        <context ref="memory"/>
+        <context ref="future-reserved-words"/>
+        <context ref="null-value"/>
+        <context ref="boolean"/>
+        <context ref="numeric"/>
+        <context ref="constant"/>
+      </include>
+    </context>
+
+  </definitions>
+</language>
