@@ -12,3 +12,5 @@ cd language-specs
 cp ~/zep.lang .
 ``` 
 
+For Geany, you can download the syntax highlighter [here](http://beexy.org/zep/wiki/doku.php?id=experiment:faq#how_can_i_setup_syntax_highlig).
+ 
